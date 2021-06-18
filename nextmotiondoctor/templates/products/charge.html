@@ -1,0 +1,86 @@
+
+
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block title %}NextMotion : Payment{% endblock %}
+
+{% block head %}
+{% endblock %}
+
+{% block content %}
+<div class="container">
+        <div class="header-top">
+                <!-- <div class="container"> -->
+                   <div class="row">
+                      <div class="col-md-4 logo">
+                         <a href="/"><img src="{% static 'images/marketing_logo1.png' %}"></a>
+                      </div>
+                      <div class="col-md-4">
+                      </div>
+                      <div class="col-md-4 search_icon">
+                         <!-- <input class="search_input" id="product_search" type="text" placeholder="Search..."> 
+                         <button onclick="product_filter()" class="btn_1" type="button"><i class="fa fa-search"></i></button>  -->
+                      </div>
+                   </div>
+                <!-- </div> -->
+                <!-- <div class="container">
+                   <nav class="navbar navbar-inverse navigation_bar">
+                      <div class="navbar-header">
+                         <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+                         <span class="icon-bar"></span>
+                         <span class="icon-bar"></span>
+                         <span class="icon-bar"></span> 
+                         </button>
+                      </div>
+                      <div class="collapse navbar-collapse" id="myNavbar">
+                         <ul class="nav navbar-nav">
+                            {% for category in categories %}
+                            <li><a value="{{ category.name }}" class="product_categories" href="javascript:;">{{ category.name }}</a></li>
+                            {% endfor %}
+                         </ul>
+                      </div>
+                   </nav>
+                </div>
+                <div class="container">
+                   <div class="row">
+                      <div class="col-md-12">
+                         <div class="dropdown">
+                            <a href="{% url 'nm_marketplace_cart' %}" class="add-to-cart-button">
+                               <p class="pan_text"><i class="fa fa-shopping-cart" aria-hidden="true"></i><span class="cart_count_total">0</span><b>Cart</b></p>
+                               <p class="vide_text">(vide)</p>
+                            </a>
+                         </div>
+                      </div>
+                      <div class="btn-content2">
+                         <button type="button" class="btn btn-success2"><i class="fa fa-home" aria-hidden="true"></i>
+                         <span class="btn_text2"> Votre panier</span></button>
+                      </div>
+                   </div>
+                </div> -->
+                <!-- <div class="btn-content">
+                   <button type="button" class="btn btn-success"><i class="fa fa-home" aria-hidden="true"></i><span class="btn_text">GALDERMA</span></button>
+                   </div> -->
+            </div>
+{% if error %}
+<div class="col-md-12 payment_charge">
+    <div class="row">
+        <h4 class="payment_success_message" style="color: red">{{ error }}</h4>
+    </div>
+</div>
+{% else %}
+<div class="col-md-12 payment_charge">
+      <div class="row">
+         <a class="invoice_pdf_link" href="{{ pdf_link }}" download target="_blank">Click here to download invoice.</a>
+      </div>
+    <div class="row">
+        <img class="payment_success_image" src="{% static 'images/tick-gif.gif' %}">
+        <h4 class="payment_success_message">Paiement réussi !!</h4>
+        <h2 class="payment_success_message">Votre commande a été passée avec succès</h2>
+    </div>
+</div>
+{% endif %}
+</div>
+{% endblock content %}
+

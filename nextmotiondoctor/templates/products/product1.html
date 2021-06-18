@@ -1,0 +1,185 @@
+{% extends 'base.html' %}
+
+{% block title %}Products{% endblock %}
+
+{% load static %}
+
+{% block head %}
+{% endblock %}
+
+{% block content %}
+
+<div class="col-md-12 product_top">
+    <div class="row">
+        
+        <div class="col-md-2 product_filters">
+        <form id="product_form" method="POST">
+        {% csrf_token %}
+            <div class="row">
+                <div class="col-md-6">
+                    <h6 class="filter_main_heading">Filters</h6>
+                </div>
+                <div class="col-md-6">
+                    
+                </div>
+            </div>
+            <ul class="list-unstyled components">
+                <li class="active">
+                    <a href="#product_type" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle filter_top_button btn btn-default">Product Type</a>
+                    <ul class="collapse list-unstyled inner_list show" id="product_type">
+                        {% for value in product_type %}
+                        <li>
+                            <div class="checkbox">
+                                <label><input onchange="product_filter()" type="checkbox" {% if value.field_name in selected_product_type %}checked {% endif %} name="product_type" value="{{ value.field_name }}"><span class="checkbox_span">{{ value.field_name }}</span></label>
+                            </div>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                </li>
+        
+                <li>
+                    <a href="#product_effect" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle filter_top_button btn btn-default">Product Effect</a>
+                    <ul class="collapse list-unstyled inner_list" id="product_effect">
+                        {% for value in product_effect %}
+                        <li>
+                            <div class="checkbox">
+                                <label><input onchange="product_filter()" type="checkbox" {% if value.field_name in selected_product_effect %}checked {% endif %} name="product_effect" value="{{ value.field_name }}"><span class="checkbox_span">{{ value.field_name }}</span></label>
+                            </div>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                </li>
+                <li>
+                    <a href="#skin_type" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle filter_top_button btn btn-default">Skin Type</a>
+                    <ul class="collapse list-unstyled inner_list" id="skin_type">
+                        {% for value in skin_type %}
+                        <li>
+                            <div class="checkbox">
+                                <label><input onchange="product_filter()" type="checkbox" {% if value.field_name in selected_skin_type %}checked {% endif %} name="skin_type" value="{{ value.field_name }}"><span class="checkbox_span">{{ value.field_name }}</span></label>
+                            </div>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                </li>
+                <li>
+                    <a href="#product_brand" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle filter_top_button btn btn-default">Product Brand</a>
+                    <ul class="collapse list-unstyled inner_list" id="product_brand">
+                        {% for value in product_brand %}
+                        <li>
+                            <div class="checkbox">
+                                <label><input onchange="product_filter()" type="checkbox" {% if value.field_name in selected_product_brand %}checked {% endif %} name="product_brand" value="{{ value.field_name }}"><span class="checkbox_span">{{ value.field_name }}</span></label>
+                            </div>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    
+    <div class="col-md-10 products_listing_section">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="container">
+                    <div class="searchbar">
+                        <input id="product_search" class="search_input" type="text" name="search" placeholder="Search...">
+                        <button type="button" onclick="empty_search_box()" style="display: none" class="search_close_button"><i class="fas fa-times-circle"></i></button>
+                        <button onclick="product_filter()" class="search_icon" type="button"><i class="fas fa-search"></i></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        </form>
+        <div id="product_cards_container" class="srch">
+        <div class="row">
+            {% if products %}
+            {% for product in products %}
+            <div class="col-md-3">
+                <a class="product_link" href="{% url 'single_product' product.id %}">
+                <div class="image_card">
+                    <img class="product_image" src="{{ product.product_image }}">
+                    <h4>{{ product.product_name }}</h4>
+                    <p class="product_volume">{% if product.volume %}{{ product.volume }}{% else %}--{% endif %} ml</p>
+                    <p class="product_price">€ {{ product.selling_price }}</p>
+                    <div class="rating_stars">
+                        <span class="fa fa-star checked"></span>
+                        <span class="fa fa-star checked"></span>
+                        <span class="fa fa-star checked"></span>
+                        <span class="fa fa-star"></span>
+                        <span class="fa fa-star"></span>
+                    </div>
+                </div>
+                </a>
+            </div>
+            {% if forloop.counter|divisibleby:4 %}
+            </div>
+            <div class="row">
+            {% endif %}
+            
+        
+        {% endfor %}
+        {% else %}
+        <div class="no_products">
+            <h4>No products found !!!</h4>
+        </div>
+        {% endif %}
+    </div>
+    </div>
+    </div>
+</div>
+</div>
+<div style="display: none" class="loader-body">
+<div class="spinner-border text-primary loader" role="status">
+  <span class="sr-only">Loading...</span>
+</div>
+</div>
+<script>
+$(document).ready(function(){
+  $('.cart-quantity-badge').text({{ count }});
+});
+</script>
+<script type="text/javascript">
+    $(document).ready(function(){
+                
+    });
+    function product_filter(){
+        var form_data = $("#product_form").serialize();
+        $(".loader-body").show();
+        $.ajax({
+            url: '/',
+            type: 'POST',
+            data: form_data,                 
+            success: function(data){
+                $(".srch").html(data);
+                $(".loader-body").hide();
+            }
+        });
+    }
+    function delay(callback, ms) {
+        var timer = 0;
+        return function() {
+            var context = this, args = arguments;
+            clearTimeout(timer);
+            timer = setTimeout(function () {
+                callback.apply(context, args);
+            }, ms || 0);
+        };
+    }
+
+    function empty_search_box(){
+        $('#product_search').val("")
+        $(".search_close_button").hide();
+        product_filter();
+    }
+
+    $('#product_search').keyup(function(){
+        if($('#product_search').val() != ""){
+            $(".search_close_button").show();
+        };
+    })
+
+    $('#product_search').keyup(delay(function (e) {
+        product_filter();
+    }, 1000));
+</script>
+
+{% endblock %}                                                      

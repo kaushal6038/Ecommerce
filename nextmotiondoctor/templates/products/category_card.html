@@ -1,0 +1,57 @@
+
+{% if category_data %}
+<h3 class="list_1">FILTRES</h3>
+{% for data in category_data %}
+    <ul class="list_content">{% for value in data.product_type %}{{ value.label }}{% endfor %}
+        {% for value in data.product_type %}
+        {% if not value.label %}
+        <li><a ids="{{ value.id }}" class="product_type {% if value.id in selected_product_type %}selected_product_type{% endif %}" href="javascript:;"><i class="fa fa-angle-right" aria-hidden="true"></i>{{ value.name }}</a></li>
+        {% endif %}
+        {% endfor %}
+    </ul>
+    <ul class="list_content"> {% for value in data.product_effect %}{{ value.label }}{% endfor %}
+        {% for value in data.product_effect %}
+        {% if not value.label %}
+        <li><a ids="{{ value.id }}" class="product_effect {% if value.id in selected_options_effect %}selected_product_effect{% endif %}" href="javascript:;"><i class="fa fa-angle-right" aria-hidden="true"></i>{{ value.name }}</a></li>
+        {% endif %}
+        {% endfor %}
+    </ul>
+    <ul class="list_content">{% for value in data.skin_type %}{{ value.label }}{% endfor %}
+        {% for value in data.skin_type %}
+        {% if not value.label %}
+        <li><a ids="{{ value.id }}" class="skin_type {% if value.id in selected_options_skin %}selected_skin_type{% endif %}" href="javascript:;"><i class="fa fa-angle-right" aria-hidden="true"></i>{{ value.name }}</a></li>
+        {% endif %}
+        {% endfor %}
+    </ul>
+    
+    <ul class="list_content">{% for value in data.product_brand %}{{ value.label }}{% endfor %}
+        {% for value in data.product_brand %}
+        {% if not value.label %}
+        <li><a ids="{{ value.id }}" class="product_brand {% if value.id in selected_options_brand %}selected_product_brand{% endif %}" href="javascript:;"><i class="fa fa-angle-right" aria-hidden="true"></i>{{ value.name }}</a></li>
+        {% endif %}
+        {% endfor %}
+    </ul>	
+{% endfor %}
+{% endif %}  	
+<script>
+$(".product_type").click(toggleClassType);
+function toggleClassType() {
+    $(this).toggleClass("selected_product_type");
+    product_filter();
+}
+$(".product_effect").click(toggleClassEffect);
+function toggleClassEffect() {
+    $(this).toggleClass("selected_product_effect");
+    product_filter();
+}
+$(".skin_type").click(toggleClassSkin);
+function toggleClassSkin() {
+    $(this).toggleClass("selected_skin_type");
+    product_filter();
+}
+$(".product_brand").click(toggleClassBrand);
+function toggleClassBrand() {
+    $(this).toggleClass("selected_product_brand");
+    product_filter();
+}
+</script>

@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% block title %}Login{% endblock %}
+{% block headsection %}
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link href="{% static 'css/style1.css' %}" rel="stylesheet" type="text/css"/>
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+<link rel="stylesheet" type="text/css" href="{% static 'css/main.css' %}" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.9.0/css/all.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+
+{% endblock %}
+{% block content %}
+<div class="header-top">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6 logo_text">
+                <a href="/"><img src="{% static 'images/marketing_logo1.png' %}"></a>
+            </div>
+            <div class="col-md-6 nav_text">
+                <ul class="menu">
+                    {% if user.is_authenticated %}
+                        <li>Welcome {{ user.username }}</li>
+                        <li class="last_child"><a class="user_logout" href="{% url 'logout' %}">Logout</a></li>
+                        <li><a class="shopping_cart" href="{% url 'nm_marketplace_cart' %}"><i style="font-size: 20px" class="fas fa-shopping-cart"></i><span class="badge badge-secondary cart-quantity-badge">0</span></a></li>
+                    {% else %}
+                        <li> <a href="{% url 'login' %}">Login</a></li>
+                        <li class="last_child"><a href="{% url 'signup' %}">Register</a></li>
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="container">
+<div id="login">
+        <div id="login-row">
+            <div id="login-column">
+<div id="login-box">
+    <form method="post">
+		{% csrf_token %}
+    <h3 class="text-center text-info">Login to your account</h3>
+        {{ form|crispy }}
+        <button class="btn btn-info btn-md" type="submit" style="margin-top: 10px">Login</button>
+    </form>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+{% endblock %}

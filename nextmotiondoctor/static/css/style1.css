@@ -1,0 +1,139 @@
+@charset "utf-8";
+/* CSS Document */
+body {
+  margin: 0;
+  padding: 0;
+  background-color: #17a2b8;
+  height: 100vh;
+}
+div#login {
+    margin: 0 auto;
+    width: 33%;
+    background: #fff;
+    border: 1px solid #ccc;
+    padding: 15px 20px;
+    box-shadow: 0 0 #9b9a9a;
+    margin-top: 2%;
+}
+
+
+/*Register*/
+.header-top {
+  box-shadow: 0px 7px 8px -10px rgba(0,0,0,0.46);
+  background: white;
+  padding-bottom: 15px;
+}
+.logo_text img {
+    margin-top: 25px;
+    margin-bottom: 10px;
+}
+
+.menu {
+    float: right;
+    margin-bottom: unset;
+    margin-top: 25px;
+}
+.menu li {
+   list-style: none;
+    font-size: 15px;
+    float: left;
+    padding-left: 43px;
+}
+.menu li:hover {
+	color:#4b93ed;
+}
+.last_child{
+	float:right;
+}
+div#register {
+    margin: 0 auto;
+    width: 33%;
+    background: #fff;
+    box-shadow: 0 0 #9b9a9a;
+    margin-top:4%;
+}
+.form-group.md_nd {
+    width: 48%;
+    margin-right: 4%;
+    float: left;
+}
+ .first_gr
+ {
+	     margin-right:0 !important;
+ }
+ h3.text-center.text-info {
+    background: #4b93ed;
+    color: #fff;
+    padding: 15px;
+    text-transform: uppercase;
+    font-size: 19px;
+	margin-bottom:unset;
+}
+div#register-box {
+    border: 1px solid #ccc;
+    padding: 5% 4%;
+    float: left;
+    width: 100%;
+}
+
+/* Hide the browser's default checkbox */
+
+.checkmark {
+  position: absolute;
+  top: 0;
+  right: 0;
+  height: 22px;
+  width: 22px;
+  background-color: #eee;
+}
+
+.container:hover input ~ .checkmark {
+  background-color: #ccc;
+}
+
+.container input:checked ~ .checkmark {
+  background-color: #2196F3;
+}
+
+.checkmark:after {
+  content: "";
+  position: absolute;
+  display: none;
+}
+
+.container input:checked ~ .checkmark:after {
+  display: block;
+}
+
+.container .checkmark:after {
+  left: 9px;
+  top: 5px;
+  width: 5px;
+  height: 10px;
+  border: solid white;
+  border-width: 0 3px 3px 0;
+  -webkit-transform: rotate(45deg);
+  -ms-transform: rotate(45deg);
+  transform: rotate(45deg);
+}
+
+label.container.chf {
+    padding-left: 0;
+    font-size: 14px;
+    color: #31708f;
+    margin-top: 2%;
+	float: left;
+	margin-bottom: 5%;
+}
+.btn-info {
+    color: #fff;
+    background-color: #4b93ed !important;
+    border-color: #4b93ed !important;
+}
+.changepassword {
+    text-align: left;
+    float: right;
+    width: 78%;
+    margin-top: 10px;
+}
+/*Register*/

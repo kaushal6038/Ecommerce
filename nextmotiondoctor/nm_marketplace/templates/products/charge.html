@@ -1,0 +1,45 @@
+
+
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block title %}NextMotion : Payment{% endblock %}
+
+{% block head %}
+{% endblock %}
+
+{% block content %}
+<div class="container">
+        <div class="header-top">
+                   <div class="row">
+                      <div class="col-md-4 logo">
+                         <a href="/"><img src="{% static 'images/marketing_logo1.png' %}"></a>
+                      </div>
+                      <div class="col-md-4">
+                      </div>
+                      <div class="col-md-4 search_icon">
+                      </div>
+                   </div>
+            </div>
+{% if error %}
+<div class="col-md-12 payment_charge">
+    <div class="row">
+        <h4 class="payment_success_message" style="color: red">{{ error }}</h4>
+    </div>
+</div>
+{% else %}
+<div class="col-md-12 payment_charge">
+   <div class="row">
+      <a class="invoice_pdf_link" href="{{ pdf_link }}" download target="_blank">Click here to download invoice.</a>
+   </div>
+    <div class="row">
+        <img class="payment_success_image" src="{% static 'images/tick-gif.gif' %}">
+        <h4 class="payment_success_message">Paiement réussi !!</h4>
+        <h2 class="payment_success_message">Votre commande a été passée avec succès</h2>
+    </div>
+</div>
+{% endif %}
+</div>
+{% endblock content %}
+

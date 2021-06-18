@@ -1,0 +1,246 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}NextMotion : Single Product{% endblock %}
+{% block extrahead %}
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+<script src="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script>
+<script src="/static/js/video-size.js"></script>
+<script src="/static/js/video.js"></script>
+{% endblock %}
+{% block content %}
+<div class="header-top">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-4 logo">
+                <a href="/"><img src="{% static 'images/marketing_logo1.png' %}"></a>
+            </div>
+            <div class="col-md-4">
+
+            </div>
+            <div class="col-md-4 search_icon">
+	            <input onkeyup="product_filter()" class="search_input" id="product_search" type="text" placeholder="Chercher..."> 
+                <button onclick="product_filter()" class="btn_1" type="button"><i class="fa fa-search"></i></button>
+                <div class="search_results" style="display:none">
+
+                </div> 
+            </div> 	 	
+        </div>
+    </div>
+    <div class="container">
+        <nav class="navbar navbar-inverse navigation_bar">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar" style="background-color: black">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span> 
+                </button>
+            </div>
+            <div class="collapse navbar-collapse" id="myNavbar">
+                <ul class="nav navbar-nav">
+                    {% for category in products_extra.all_categories %}
+                    <li><a class="product_categories" href="/?category={{ category.id }}">{{ category.name }}</a></li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </nav>
+    </div>
+    
+	<!-- <div class="btn-content">
+	    <button type="button" class="btn btn-success"><i class="fa fa-home" aria-hidden="true"></i><span class="btn_text">GALDERMA</span></button>
+	</div> -->
+</div>
+<div class="detail_section">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-4 col-md-12  det_text">
+                <a href="{{ product.product_image }}" data-fancybox data-caption="{{ product.product_name }}">
+                    <img src="{{ product.product_image }}" />
+                </a>
+            </div>
+            <div class="col-md-4 col-md-12 det1_text">
+                <h3>{{ product.product_name }} ({{ product.volume }}ml)</h3>
+                {{ product.product_description|safe }}
+                {% if product.product_video %}
+                <div class="single_video_container">
+                    <!-- <a class="play_video_anchor" href="https://www.youtube.com/embed/{{ product.product_video }}" data-lity><span class="category_video_span">Play video</span><i class="glyphicon glyphicon-play-circle" aria-hidden="true" style="font-size:43px;color:#fff"></i></a> -->
+                    <iframe src="https://www.youtube.com/embed/{{ product.product_video }}" class="play_video_anchor" width="250" height="150"  frameborder="0" gesture="media" allowfullscreen></iframe>
+                </div>
+                {% endif %}
+            </div>
+            <div class="col-md-4 col-md-12  det2_text">
+                <h3>{{ product.selling_price }} €</h3>
+                <div class="d2_content">
+                    <h5>Quantité</h5>
+                    <input type="text" readonly id="product_quantity" class="quantity_single_product value_text" value="1">
+                    <button onclick="changeQuantity('add')" type="button" class="btn btn-info">+</button>
+                    <button onclick="changeQuantity('sub')" type="button" class="btn btn-info">-</button>
+                </div>
+                <button onclick="addToCart()" type="button" class="btn btn-danger"><i class="fa fa-shopping-cart" aria-hidden="true"></i><span class="pan_content">Ajouter au chariot<span></button>
+                <div class="pay_content">    
+                    <div class="dropdown">
+                        <a href="{% url 'nm_marketplace_cart' %}" style="border-radius: 5px;" class="single_product_add-to-cart-button"><p class="single_productpan_text"><i class="fa fa-shopping-cart" aria-hidden="true"></i><span class="cart-quantity-badge cart_count_total">0</span><span style="margin-left: 8%;">Procéder au panier</span></p>
+                        </a>
+                    </div> 
+                </div>
+        </div>
+    </div>
+</div>
+<div class="sav_content">
+	<div class="container">
+	    <div class="row">
+	        <div class="col-md-12 data_1">
+	            <h3>La description</h3>
+	            <div class="emp_text1">
+                    {{ product.product_description|safe }}
+                </div>
+            </div>
+	        <div class="col-md-12 data_2">
+	            <h3>Action</h3>
+	            <div class="emp_text1">
+	                {{ product.action|safe }}
+	            </div>
+	        </div>
+	        <div class="col-md-12 data_3">
+	            <h3>Résultats</h3>
+	            <div class="emp_text1">
+	                {{ product.results|safe }}
+	            </div>
+            </div>
+            <div class="col-md-12 data_3">
+                <h3>Meilleurs patients</h3>
+                <div class="emp_text1">
+                    {{ product.best_patients|safe }}
+                </div>
+            </div>
+            <div class="col-md-12 data_3">
+                <h3>Comment utiliser</h3>
+                <div class="emp_text1">
+                    {{ product.how_to_use|safe }}
+                </div>
+            </div>
+	    </div>
+	</div>
+</div>
+<div class="product_details1">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12 data_1 new_single_product">
+                <h3>Produits connexes</h3>
+            </div>
+            {% for product in product.associated_products %}
+            <div class="col-md-2 card1">
+                <img src="{{ product.product_image }}" alt="">
+                <div class="card-body-new">
+                    <h5 class="card-title">{{ product.product_name }}</h5>
+                    <p class="card-text">{{ product.volume }}ml.</p>
+                    <p class="price_1">{{ product.selling_price }}€</p>
+                    <a><button onclick="addToCartNew({{ product.id }})" class="cart_btn1">Ajouter au chariot</button></a>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+<script>
+$(document).ready(function(){
+  $('.cart_count_total').text({{ count }});
+});
+function addToCart() {
+  var product_id = {{ product.id }};
+  var quantity = $("#product_quantity").val();
+  data = {'product_id':product_id,'quantity':quantity,'csrfmiddlewaretoken': '{{ csrf_token }}'};
+    $.ajax({
+      url: '{% url "nm_marketplace_add_to_cart" %}',
+      type:'POST',
+      data: data,
+      success: function(data) {
+        if (data['message']=="success"){
+          $('.cart_count_total').text(data['count']);
+          $(".snackbar_toast_success").show();
+            setTimeout(function() {
+                $('.snackbar_toast_success').fadeOut('fast');
+            }, 1000);
+        }else if(data['message']=="already"){
+            $(".snackbar_toast_already").show();
+            setTimeout(function() {
+                $('.snackbar_toast_already').fadeOut('slow');
+            }, 1000);
+        }
+      }
+    });
+};
+function addToCartNew(id) {
+  var product_id = id;
+  var quantity = 1;
+  data = {'product_id':product_id,'quantity':quantity,'csrfmiddlewaretoken': '{{ csrf_token }}'};
+    $.ajax({
+      url: '{% url "nm_marketplace_add_to_cart" %}',
+      type:'POST',
+      data: data,
+      success: function(data) {
+        if (data['message']=="success"){
+            $('.cart_count_total').text(data['count']);
+            $(".snackbar_toast_success").show();
+            setTimeout(function() {
+                $('.snackbar_toast_success').fadeOut('fast');
+            }, 1000);
+        }else if(data['message']=="already"){
+            $(".snackbar_toast_already").show();
+            setTimeout(function() {
+                $('.snackbar_toast_already').fadeOut('fast');
+            }, 1000);
+        }
+      }
+    });
+};
+$(document).click(function() {
+    $('.search_results').hide();
+});
+$(".search_input").click(function(e) {
+    e.stopPropagation();
+    return false;
+});
+
+function product_filter(){
+    var search_query = $(".search_input").val();
+    $('.search_results').hide();
+    if (search_query != ""){
+        data = {"search_query":search_query,"csrfmiddlewaretoken":"{{ csrf_token }}",
+            "current_page":1}
+        $.ajax({
+            url: '/',
+            type: 'POST',
+            data: data,                 
+            success: function(res){
+                if (res.results != ""){
+                    $('.search_results').empty();
+                    count = res.results.length;
+                    for(i=0;i<count;i++){
+                        $('.search_results').append('<a class="search_result_links" href="/single_product/'+res.results[i].id+'">'+res.results[i].product_name+'</a>')
+                    }
+                    $('.search_results').show();
+                }else{
+                    $('.search_results').empty();
+                    $('.search_results').append('<h4 class="empty_single_products">No Products Found</h4>');
+                    $('.search_results').show();
+                }
+            }
+        });
+    }
+}
+function changeQuantity(option){
+    var quantity = Number($("#product_quantity").val());
+    if (option == "add"){
+        if (quantity > 0){
+            new_quantity = quantity + 1
+        }
+    }else{
+        if (quantity > 1){
+            new_quantity = quantity - 1
+        }
+    }
+    $("#product_quantity").val(new_quantity);
+}
+
+    </script>
+{% endblock %}

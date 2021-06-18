@@ -1,0 +1,375 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}NextMotion : Products{% endblock %}
+{% block extrahead %}
+    <script src="/static/js/video-size.js"></script>
+    <script src="/static/js/video.js"></script>
+    <link href="{% static 'css/pagination.css' %}" rel="stylesheet" type="text/css" />
+    <script src="{% static 'js/pagination.js' %}"></script>
+    <script src="{% static 'js/pagination.min.js' %}"></script>
+    
+{% endblock %}
+{% block content %}
+<div class="header-top">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-4 logo">
+                <a href="/"><img src="{% static 'images/marketing_logo1.png' %}"></a>
+            </div>
+            <div class="col-md-4">
+
+            </div>
+            <div class="col-md-4 search_icon">
+	            <input class="search_input" id="product_search" type="text" placeholder="Chercher.."> 
+                <button onclick="product_filter()" class="btn_1" type="button"><i class="fa fa-search"></i></button> 
+            </div> 	 	
+        </div>
+    </div>
+    <div class="container">
+        <nav class="navbar navbar-inverse navigation_bar">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar" style="background-color: black;">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span> 
+                </button>
+            </div>
+            <div class="collapse navbar-collapse" id="myNavbar">
+                <ul class="nav navbar-nav">
+                    {% for category in products_extra.all_categories %}
+                    <li><a textid="{{ category.name }}" ids="{{ category.id }}" class="product_categories {% if category.id == selected_category %}selected_category{% endif %}" href="javascript:;">{{ category.name }}</a></li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </nav>
+    </div>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="dropdown">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <a href="{% url 'nm_marketplace_cart' %}" class="proceed_to_cart add-to-cart-button"><p class="pan_text"><i class="fa fa-shopping-cart" aria-hidden="true"></i><span class="cart-quantity-badge cart_count_total">0</span><b>Procéder au panier<i class="fa fa-angle-double-right" aria-hidden="true"></i></b></p>
+                            </a>
+                        </div>
+                        <div class="col-md-3">
+                            <div style="display: none" class="play_video_category videoplay">
+                                <!-- <a class="play_video_anchor" href="" data-lity><span class="category_video_span">Play video</span><i class="glyphicon glyphicon-play-circle" aria-hidden="true" style="font-size:43px;color:#fff"></i></a> -->
+                                <iframe class="play_video_anchor" width="250" height="150"  frameborder="0" gesture="media" allowfullscreen></iframe>
+
+                            </div>
+                        </div>
+                       
+                        <div class="col-md-6">
+                            <p class="lab_text"></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+	
+</div>
+<div class="aside_bar">
+	<div class="container">
+	    <div class="row">
+	        <div class="col-md-3 mark_text">
+	            <div class="wrapper">
+	            <div class="category_info">
+
+                </div>
+                    <div class="mall_content">
+                        <h3>Nouveaux produits</h3>
+                        {% for product in products_extra.new_products.new_products %}
+                        <div class=" col-md-12 inner_text">
+                            <a class="new_products_card" href="{% url 'nm_marketplace_single_product' product.id %}">
+                            <div class="filter_1">
+                                <img src="{{ product.product_image }}">
+                            </div>
+                            <div class="filter_2">
+                                <h4>{{ product.product_name }}<br>
+                                ({{ product.volume }} ml)</h4>
+                                <p>{{ product.title }}</p>
+                                <span>{{ product.selling_price|floatformat:2 }} €</span>
+                            </div>
+                            </a>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+            
+	        <div class="col-md-9">
+                <div class="row">
+                    <div class="col-md-12 glad_text">     
+                        <h3 class="seleted_cat">AESTHETIC DERMAL</h3>
+                        <div class="pdf_link_category" style="display: none">
+                            <a  class="pdf_link_anchor" href="" download target="_blank">Télécharger le bon  <i class="fa fa-file-pdf-o" aria-hidden="true" style="font-size: 20px;color:red;"></i></a>
+                            
+                        </div>
+                       
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+	                    <div class="details_content">
+                            <h5>Détails</h5>
+                           
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+	                <div class="pag1_1">
+                        <div class="col-md-12">
+                            <div class="row">
+                                <div id="pagination-container"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+	                <div class="card-content">
+	                    <!-- <div class="container"> -->
+                            <div class="col-md-12">
+                                <div class="row">
+                                    <div class="srch">
+                                        {% if products %}
+                                        {% for product in products %}
+                                        <div class=" col-md-4 card_container">
+                                            <div class="card">
+                                                <img src="{{ product.product_image }}" alt="Denim Jeans" style="width:100%;height: 255px">
+                                                <h1 class="card-content">{{ product.product_name }} ({{ product.volume }}ml)</h1>
+                                                <p class="price"><span class="text_price">{{ product.selling_price|floatformat:2 }} € TTC</span></p>
+                                                <div class="middle">
+                                                    <p><button type="button" style="pointer-events: none">{{ product.product_name }}</button></p>
+	                                                <p><button type="button" style="pointer-events: none" class="btn__btn info">{{ product.selling_price }} €<span class="data_data3">(Price)</span></p>																					</span></button></p>
+	                                                <p><button type="button" onclick="addToCart({{ product.id }})" class="btn_card">Add To Cart</button></p>
+                                                    <p><a href="{% url 'nm_marketplace_single_product' product.id %}" class="btn_text">Details</a></p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        {% endfor %}
+                                        {% else %}
+                                        <div class="no_products">
+                                            <h4>No products found !!!</h4>
+                                        </div>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                        <!-- </div> -->
+                    </div>
+                </div>
+            </div>
+	    </div>
+	</div>
+</div>
+<div style="display: none" class="loader-body">
+</div>
+
+<script type="text/javascript">
+$(document).ready(function(){
+  $('.cart_count_total').text({{ count }});
+   product_filter(1);
+});
+function product_filter(currPage){
+    if (currPage == undefined){
+        currPage = 1;
+    }
+    var current_page = currPage;
+    var search_query = $(".search_input").val();
+    var product_type = []
+   
+    $.each($(".selected_product_type"), function(){
+        var type_value = $(this).attr('ids')
+        if(typeof(type_value)!='undefined'){
+            product_type.push(type_value);
+        }
+    });
+    var product_effect = []
+    $.each($(".selected_product_effect"), function(){
+        var effect_value = $(this).attr('ids')
+        if(typeof(effect_value)!='undefined'){
+            product_effect.push(effect_value);
+        }
+    });
+    var skin_type = []
+    $.each($(".selected_skin_type"), function(){
+        var skin_value = $(this).attr('ids')
+        if(typeof(skin_value)!='undefined'){
+            skin_type.push(skin_value);
+            
+        }
+    });
+    
+    var product_brand = []
+    $.each($(".selected_product_brand"), function(){
+        var brand_value = $(this).attr('ids')
+        if(typeof(brand_value)!='undefined'){
+            product_brand.push(brand_value);
+            
+        }
+    });
+    var selected_categories = $(".selected_category").attr("ids");
+    if (typeof(selected_categories) == "undefined"){
+        selected_categories = "";
+    }
+    var select_cat = $(".selected_category").text();{
+    $('.seleted_cat').text(select_cat)
+    }
+  
+ 
+    data = {"search_query":search_query, "product_type":product_type,"product_effect":product_effect,
+    "skin_type":skin_type,"product_brand":product_brand,
+        "csrfmiddlewaretoken":"{{ csrf_token }}","selected_categories":selected_categories,
+        "current_page":current_page}
+    $(".loader-body").show();
+    $.ajax({
+        url: '/',
+        type: 'POST',
+        data: data,                 
+        success: function(res){
+            $(".srch").html(res.result);
+           
+            if (res.category_results){
+                $(".category_info").html(res.category_results);
+                $(".category_info").show()
+            }else{
+                $(".category_info").hide()
+            }    
+            if (res.video_link){
+                $(".play_video_anchor").attr("src","https://www.youtube.com/embed/"+res.video_link)
+                $(".play_video_category").show();
+            }else{
+                $(".play_video_category").hide();
+            }
+            if (res.pdf_link){
+                $(".pdf_link_anchor").attr("href",res.pdf_link)
+                $(".pdf_link_category").show();
+            }else{
+                $(".pdf_link_category").hide();
+            }
+            if (res.introduction){
+                $(".lab_text").html(res.introduction)
+            }
+            $(".loader-body").hide();
+            $("#pagination-container").whjPaging("setPage", {
+                currPage: currPage,
+                totalPage: res.totalPage,
+                totalSize: res.totalSize});
+        }
+    });
+}
+function delay(callback, ms) {
+    var timer = 0;
+    return function() {
+        var context = this, args = arguments;
+        clearTimeout(timer);
+        timer = setTimeout(function () {
+            callback.apply(context, args);
+        }, ms || 0);
+    };
+}
+function empty_search_box(){
+    $('#product_search').val("")
+    $(".search_close_button").hide();
+    product_filter();
+}
+$('#product_search').keyup(function(){
+    if($('#product_search').val() != ""){
+        $(".search_close_button").show();
+    };
+})
+$('#product_search').keyup(delay(function (e) {
+    product_filter();
+}, 1000));
+
+$(".product_categories").click(toggleClass);
+function toggleClass() {
+    $(".category_product_type").removeClass("selected_product_type");
+    $(".category_product_effect").removeClass("selected_product_effect");
+    $(".category_skin_type").removeClass("selected_skin_type");
+    $(".category_product_brand").removeClass("selected_product_brand");
+    var selected_categories = $(".selected_category ").attr("textid");{
+    
+    }
+    if ($(this).hasClass("selected_category")){
+        $(this).toggleClass("selected_category");
+       
+    }else{
+        $('.selected_category').removeClass("selected_category");
+        $(this).addClass("selected_category");     
+       
+    }
+    product_filter();
+}
+function addToCart(id) {
+    var product_id = id;
+    var quantity = $('.quantity_'+id).val();
+    data = {'product_id':product_id,'quantity':quantity,'csrfmiddlewaretoken': '{{ csrf_token }}'};
+    $.ajax({
+        url: '{% url "nm_marketplace_add_to_cart" %}',
+        type:'POST',
+        data: data,
+        success: function(data) {
+            if (data['message']=="success"){
+                $('.cart_count_total').text(data['count']);
+                $(".snackbar_toast_success").show();
+                setTimeout(function() {
+                    $('.snackbar_toast_success').fadeOut('fast');
+                }, 1000);
+            }else if(data['message']=="already"){
+                $(".snackbar_toast_already").show();
+                setTimeout(function() {
+                    $('.snackbar_toast_already').fadeOut('slow');
+                }, 1000);
+            }
+        }
+    });
+};
+
+$("#pagination-container").whjPaging({
+	  css: 'css-1',
+	  showPageNum: 5,
+	  firstPage: "First",
+	  previousPage: "Précédent",
+      nextPage: "Prochain",
+	  lastPage: "Last",
+	  skip: "Jump To",
+	  confirm: "Confirm",
+	  refresh: "Refresh",
+	  totalPageText: "{} Pages,",
+	  totalSizeText: "{} Entries In Total",
+	  isShowFL: false,
+	  isShowPageSizeOpt: false,
+	  isShowSkip: false,
+	  isShowRefresh: false,
+	  isShowTotalPage: false,
+	  isShowTotalSize: false,
+	  isResetPage: false,
+	  callBack: function (currPage) {
+	    product_filter(currPage);
+	  }
+	});
+    function sub_quantity(counter, price){
+       var old_value =$('#quantity_box_'+counter).val();
+       if (old_value > 1){
+           var new_value = (old_value-1);
+           var new_total = (new_value*price).toFixed(2);
+           $('#quantity_box_'+counter).val(new_value);
+           $('#single_product_total_'+counter).text(new_total);
+           total_quantity();
+       }
+   }
+   function add_product(counter, price){
+       var old_value =$('#quantity_box_'+counter).val();
+       var new_value = (parseFloat(old_value)+1);
+       var new_total = (parseFloat(new_value*price)).toFixed(2);
+       $('#quantity_box_'+counter).val(new_value);
+       $('#single_product_total_'+counter).text(new_total);
+       total_quantity();
+    }
+
+</script>
+
+{% endblock %}

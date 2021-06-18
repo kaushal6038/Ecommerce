@@ -1,0 +1,53 @@
+{% load static from staticfiles %}
+<html>
+<head>
+<title>{% block title %}{% endblock %}</title>
+{% block headsection %}
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+    <link href="{% static 'css/style.css' %}" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+{% block extrahead %}{% endblock %}
+{% endblock %}
+</head>
+<body>
+{% block content %}
+
+{% endblock %}
+<div style="display:none" class="snackbar_toast_success">
+    Produit ajouté avec succès !!!
+</div>
+<div style="display:none" class="snackbar_toast_already">
+    Produit déjà ajouté!!!
+</div>
+<div style="display:none" class="snackbar_toast_danger">
+    Quelque chose s'est mal passé !!!
+</div>
+<div class="footer">
+<div class="row">
+<div class="col-md-12">
+<div class="Copyright_text">
+    <div class="container">
+        <div class="row">
+        <div class="col-md-6"><p><a class="copyRightStyle">Nextmotion</a> © 2019</p>
+        </div>
+        <div class="col-md-6">
+            <div class="social_icons"><a href="https://www.facebook.com/nextmotion.solution/">
+                <img src="{% static 'images/fb.png' %}" class="icon_style"></a>
+                <a href="https://www.linkedin.com/company/next-motion/"><img src="{% static 'images/linkedin2.png' %}" class="icon_style"></a>
+                <a href=" https://www.instagram.com/nextmotion_solution/"><img src="{% static 'images/in.png' %}"/></a>
+            </div>
+        </div>
+        </div>
+    </div>
+</div>
+</div>
+</div>
+</div>
+
+ </body>
+</html>
